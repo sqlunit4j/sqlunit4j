@@ -1,0 +1,2 @@
+@Silent
+select * from table;
