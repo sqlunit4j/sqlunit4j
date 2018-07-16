@@ -10,19 +10,23 @@ public class TreeNode {
     StatementContext statementContext;
     List<TreeNode> children = new ArrayList<>();
     int indent;
-    public TreeNode(StatementContext statementContext,int indent) {
+
+    public TreeNode(final StatementContext statementContext, final int indent) {
         super();
         this.statementContext = statementContext;
-        this.indent=indent;
+        this.indent = indent;
     }
+
     public StatementContext getStatementContext() {
         return statementContext;
     }
+
     public List<TreeNode> getChildren() {
         return children;
     }
+
     public int getIndent() {
         return indent;
     }
-    
+
 }

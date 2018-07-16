@@ -9,7 +9,7 @@ import org.sqlunit4j.lang.SQLUnit4JParser.StatementsContext;
 
 public class Parser {
 
-    public static StatementsContext parse(final String scriptInput){
+    public static StatementsContext parse(final String scriptInput) {
         final SQLUnit4JLexer lexer = new SQLUnit4JLexer(new ANTLRInputStream(scriptInput));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final SQLUnit4JParser parser = new SQLUnit4JParser(tokens);
@@ -20,7 +20,7 @@ public class Parser {
             tokens.seek(0); // rewind input stream & reset the parser
             parser.reset();
             parser.getInterpreter().setPredictionMode(PredictionMode.LL);
-            return parser.statements(); 
+            return parser.statements();
         }
     }
 }

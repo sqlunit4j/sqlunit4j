@@ -301,7 +301,7 @@ public class Scriptor {
                         rsa.first();
                     }
                     while (System.currentTimeMillis() < start + waitFor
-                            && (!hasNext || (minRows >= 0 && actualRows < minRows))) {
+                            && (!hasNext || (minRows != null && actualRows < minRows))) {
                         Thread.sleep(300);
                         st.execute();
                         if (st.getUpdateCount() > 0) {

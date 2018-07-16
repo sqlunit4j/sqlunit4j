@@ -15,7 +15,7 @@ import org.sqlunit4j.SQLUnitSuite;
 import com.github.iounit.IOUnitTestRunner;
 
 @RunWith(IOUnitTestRunner.class)
-public class TestScript extends SQLUnitSuite{
+public class TestScript extends SQLUnitSuite {
     Connection connection;
     static int tries = 0;
 
@@ -43,25 +43,23 @@ public class TestScript extends SQLUnitSuite{
             stmt.execute("CREATE ALIAS failN FOR \"org.sqlunit4j.script.TestScript.failN\"");
 
         }
-        registerStatementHandler(new StatementHandler(){
+        registerStatementHandler(new StatementHandler() {
 
             @Override
-            public String doStatement(String statement, ScriptContext context) {
+            public String doStatement(final String statement, final ScriptContext context) {
                 return "TEST::" + statement;
             }
 
             @Override
-            public boolean isHandler(String key) {
+            public boolean isHandler(final String key) {
                 return true;
             }
-            
+
         });
     }
-    
 
-
-    public static ResultSet simpleProc(String input) {
-        SimpleResultSet rs = new SimpleResultSet();
+    public static ResultSet simpleProc(final String input) {
+        final SimpleResultSet rs = new SimpleResultSet();
         if (input != null) {
             rs.addColumn("ID", Types.INTEGER, 10, 0);
             rs.addColumn("NAME", Types.VARCHAR, 255, 0);
@@ -69,22 +67,20 @@ public class TestScript extends SQLUnitSuite{
         }
         return rs;
     }
-    
-    public static SimpleResultSet failN(String input) {
-        SimpleResultSet rs = new SimpleResultSet();
-        if(tries++>=3){
+
+    public static SimpleResultSet failN(final String input) {
+        final SimpleResultSet rs = new SimpleResultSet();
+        if (tries++ >= 3) {
             rs.addColumn("ID", Types.INTEGER, 10, 0);
             rs.addColumn("NAME", Types.VARCHAR, 255, 0);
             rs.addRow(0, input);
         }
         return rs;
     }
-    
-    public static String simpleProc2(String input) {
+
+    public static String simpleProc2(final String input) {
         return input.toLowerCase();
     }
-
-
 
     @Override
     public Connection getConnection() throws ClassNotFoundException, SQLException {

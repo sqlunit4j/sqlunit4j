@@ -39,7 +39,6 @@ public class TestParsing {
             parser.getInterpreter().setPredictionMode(PredictionMode.LL);
             parseTree = parser.statements(); // STAGE 2
         }
-        
 
         return actualTokens + "\r\n===========\r\n"
                 + toPrettyTree(parseTree.toStringTree(Arrays.asList(parser.getRuleNames())));
