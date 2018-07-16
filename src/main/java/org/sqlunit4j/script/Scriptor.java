@@ -88,26 +88,29 @@ public class Scriptor {
                 if (statement.prefixPhrase() != null) {
                     final String output = doPrefix(statement.prefixPhrase(), context);
                     logger.info(output);
-                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree))
+                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
                         totalResult.append(output);
+                    }
                     continue;
                 }
                 if (statement.defStatement() != null) {
                     final String output = doDef(statement.defStatement(), context);
                     logger.info(output);
-                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree))
+                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
                         totalResult.append(output);
+                    }
                     continue;
                 }
                 if (statement.printPhrase() != null) {
                     final String output = doPrint(statement.printPhrase(), context);
-                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree))
+                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
                         totalResult.append(output);
+                    }
                     continue;
                 }
                 final StatementMetaData result = new StatementMetaData();
-                
-                for(DashCommentContext dd:statement.dashComment()) {
+
+                for (final DashCommentContext dd : statement.dashComment()) {
                     doStatement(dd, result);
                 }
                 if (statement.selectStatement() != null) {
@@ -134,9 +137,9 @@ public class Scriptor {
                 // if(hasAnnotation(statement,"Verify") ||
                 // statements.indexOf(statementTree) == statements.size()-1)
                 totalResult.append(output);
-            } catch (Exception e) {
-                throw new RuntimeException("On line " + statement.start.getLine() + ":" + statement.start.getCharPositionInLine()
-                        + " " + e.getMessage(), e);
+            } catch (final Exception e) {
+                throw new RuntimeException("On line " + statement.start.getLine() + ":"
+                        + statement.start.getCharPositionInLine() + " " + e.getMessage(), e);
             }
         }
         return totalResult.toString();
@@ -146,24 +149,26 @@ public class Scriptor {
         return statements.indexOf(statementTree) == statements.size() - 1 && statementTree.getChildren().size() == 0;
     }
 
-    private boolean hasAnnotation(StatementContext statement, String annoName) {
+    private boolean hasAnnotation(final StatementContext statement, final String annoName) {
         if (statement.annotationPhrase() != null) {
-            for (AnnotationPhraseContext phrase : statement.annotationPhrase()) {
-                for (AnnotationWordContext word : phrase.annotationWord()) {
-                    if (word != null && annoName.equalsIgnoreCase(word.getText()))
+            for (final AnnotationPhraseContext phrase : statement.annotationPhrase()) {
+                for (final AnnotationWordContext word : phrase.annotationWord()) {
+                    if (word != null && annoName.equalsIgnoreCase(word.getText())) {
                         return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    private Object getAnnotationParm(StatementContext statement, String annoName, String parm, Object defaultVal) {
+    private Object getAnnotationParm(final StatementContext statement, final String annoName, final String parm,
+            final Object defaultVal) {
         if (statement.annotationPhrase() != null) {
-            for (AnnotationPhraseContext phrase : statement.annotationPhrase()) {
-                for (AnnotationWordContext word : phrase.annotationWord()) {
+            for (final AnnotationPhraseContext phrase : statement.annotationPhrase()) {
+                for (final AnnotationWordContext word : phrase.annotationWord()) {
                     if (word != null && annoName.equalsIgnoreCase(word.getText())) {
-                        for (AnnotationParameterContext annoParm : phrase.annotationParameter()) {
+                        for (final AnnotationParameterContext annoParm : phrase.annotationParameter()) {
                             if (annoParm.name.getText().equals(parm)) {
                                 return annoParm.number != null ? Integer.parseInt(annoParm.number.getText())
                                         : annoParm.string.getText();
@@ -176,13 +181,14 @@ public class Scriptor {
         return defaultVal;
     }
 
-    private String doPrefix(PrefixPhraseContext prefixPhrase, ScriptContext context) throws Exception {
-        String prefixText = prefixPhrase.prefix.getText().trim();
-        for (StatementHandler handler : statementHandlers) {
+    private String doPrefix(final PrefixPhraseContext prefixPhrase, final ScriptContext context) throws Exception {
+        final String prefixText = prefixPhrase.prefix.getText().trim();
+        for (final StatementHandler handler : statementHandlers) {
             if (handler != null && handler.isHandler(prefixText)) {
-                String retval = handler.doStatement(prefixPhrase.prefixBody().getText(), context);
-                if (retval.length() > 0)
+                final String retval = handler.doStatement(prefixPhrase.prefixBody().getText(), context);
+                if (retval.length() > 0) {
                     return retval + "\r\n";
+                }
                 return "";
             }
         }
@@ -282,11 +288,20 @@ public class Scriptor {
             processOutParams(statementInfo, context, st);
             ResultSet rsa = st.getResultSet();
             if (rsa != null) {
+                int actualRows = 0;
                 boolean hasNext = rsa.next();
                 if (hasAnnotation(currentStatement.getStatementContext(), "WaitFor")) {
-                    Integer waitFor = (Integer) getAnnotationParm(currentStatement.getStatementContext(), "WaitFor",
-                            "maxMillis", 8000);
-                    while (System.currentTimeMillis() < start + waitFor && !hasNext) {
+                    final Integer minRows = (Integer) getAnnotationParm(currentStatement.getStatementContext(),
+                            "WaitFor", "rows", null);
+                    final Integer waitFor = (Integer) getAnnotationParm(currentStatement.getStatementContext(),
+                            "WaitFor", "maxMillis", 8000);
+                    if (minRows != null) {
+                        rsa.last();
+                        actualRows = rsa.getRow();
+                        rsa.first();
+                    }
+                    while (System.currentTimeMillis() < start + waitFor
+                            && (!hasNext || (minRows >= 0 && actualRows < minRows))) {
                         Thread.sleep(300);
                         st.execute();
                         if (st.getUpdateCount() > 0) {
@@ -297,6 +312,11 @@ public class Scriptor {
                         processOutParams(statementInfo, context, st);
                         rsa = st.getResultSet();
                         hasNext = rsa.next();
+                        if (minRows != null) {
+                            rsa.last();
+                            actualRows = rsa.getRow();
+                            rsa.first();
+                        }
                     }
                 }
                 if (!hasNext) {
@@ -314,7 +334,7 @@ public class Scriptor {
     }
 
     private void processOutParams(final StatementMetaData statementInfo, final ScriptContext context,
-            CallableStatement st) throws SQLException {
+            final CallableStatement st) throws SQLException {
         for (int parmNum = 1; parmNum <= st.getParameterMetaData().getParameterCount(); parmNum++) {
             if ((ParameterMetaData.parameterModeOut & st.getParameterMetaData().getParameterMode(parmNum)) > 0
                     || (ParameterMetaData.parameterModeInOut
@@ -354,6 +374,7 @@ public class Scriptor {
     private void doStatement(final DashCommentContext dashStatement, final StatementMetaData result) {
         result.append(dashStatement.getText());
     }
+
     private void doStatement(final SelectStatementContext selectStatement, final StatementMetaData result) {
         result.append(selectStatement.getChild(0).getText());
         doStatementBody(selectStatement.statementBody(), result);
@@ -473,7 +494,7 @@ public class Scriptor {
         return nextSibling;
     }
 
-    public void registerStatementHandler(StatementHandler h) {
+    public void registerStatementHandler(final StatementHandler h) {
         statementHandlers.add(h);
     }
 }

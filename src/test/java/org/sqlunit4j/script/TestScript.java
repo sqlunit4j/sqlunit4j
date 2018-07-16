@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 
 import org.h2.tools.SimpleResultSet;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.sqlunit4j.SQLUnitSuite;
 
@@ -18,6 +19,7 @@ public class TestScript extends SQLUnitSuite{
     Connection connection;
     static int tries = 0;
 
+    @Before
     public void setUp() throws SQLException, ClassNotFoundException {
         Class.forName("org.h2.Driver");
         connection = DriverManager.getConnection("jdbc:h2:mem:test");

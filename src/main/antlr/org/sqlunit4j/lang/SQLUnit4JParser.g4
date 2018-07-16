@@ -92,9 +92,11 @@ defValue:
 otherStatement:
   statementBody SEMI_COLON WS* (NEWLINE|EOF);
 
-statementBody: 
+statementBody:
   (WORD|reservedWord|NUMBER|parameter|EQUALS
-  	|SYMBOL|LEFT_PAREN|RIGHT_PAREN|AT|CLOSE_BRACKET|OPEN_BRACKET|DOLLAR|DASH|stringLiteral|WS|NEWLINE|COLON|COMMA
+  	|SYMBOL|LEFT_PAREN|RIGHT_PAREN|AT|
+  	CLOSE_BRACKET|OPEN_BRACKET|DOLLAR|DASH|stringLiteral|
+  	WS|IDENT_WS|NEWLINE|COLON|COMMA
   )+ ;
 
 reservedWord:
