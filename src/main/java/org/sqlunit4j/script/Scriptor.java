@@ -295,10 +295,12 @@ public class Scriptor {
                             "WaitFor", "rows", null);
                     final Integer waitFor = (Integer) getAnnotationParm(currentStatement.getStatementContext(),
                             "WaitFor", "maxMillis", 8000);
-                    if (minRows != null) {
+                    if (hasNext && minRows != null) {
                         rsa.last();
                         actualRows = rsa.getRow();
                         rsa.first();
+                    }else{
+                        actualRows = 0;
                     }
                     while (System.currentTimeMillis() < start + waitFor
                             && (!hasNext || (minRows != null && actualRows < minRows))) {
@@ -312,10 +314,12 @@ public class Scriptor {
                         processOutParams(statementInfo, context, st);
                         rsa = st.getResultSet();
                         hasNext = rsa.next();
-                        if (minRows != null) {
+                        if (hasNext && minRows != null) {
                             rsa.last();
                             actualRows = rsa.getRow();
                             rsa.first();
+                        }else{
+                            actualRows = 0;
                         }
                     }
                 }
