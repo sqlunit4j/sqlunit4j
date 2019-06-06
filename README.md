@@ -100,3 +100,28 @@ call proc1('123');
 |0 |123 |
 +--+----+
 ```
+#### Nesting calls and implied loops
+Script:
+````
+select * from table2;
+  call simpleProc(${COL1});
+````
+
+Output:
+````
+select * from table2;
+  call simpleProc(?);
+  +--+----+
+  |ID|NAME|
+  +--+----+
+  |0 |Aaa |
+  +--+----+
+
+
+  call simpleProc(?);
+  +--+----+
+  |ID|NAME|
+  +--+----+
+  |0 |Bbb |
+  +--+----+
+````
