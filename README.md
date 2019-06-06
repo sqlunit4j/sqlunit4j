@@ -25,3 +25,63 @@ Use subfolders to group your scripts into suites.
 #### gradle test
 
 Runs the sql scripts as testss.  The first run will generate the expected results for you, subsequent runs will compare the output.
+
+### By Example
+#### Basic
+Script:
+```
+select * from table;
+```
+Output:
+```
+select * from table;
++-+-+
+|X|Y|
++-+-+
+|A|1|
++-+-+
+```
+
+#### Update/Delete
+Script:
+```
+update TABLE2 set Col1='Zzz' where Col1='Aaa';
+delete from TABLE2 where Col1='Bbb';
+```
+Output:
+```
+update TABLE2 set Col1='Zzz' where Col1='Aaa';
+1 records updated/deleted
+
+delete from TABLE2 where Col1='Bbb';
+1 records updated/deleted
+```
+
+#### Silent Update/Delete
+Script:
+```
+--@Silent
+update TABLE2 set Col1='Zzz' where Col1='Aaa';
+--@Silent
+delete from TABLE2 where Col1='Bbb';
+```
+Output:
+```
+update TABLE2 set Col1='Zzz' where Col1='Aaa';
+
+delete from TABLE2 where Col1='Bbb';
+```
+
+#### Vars and Print
+Script:
+```
+def foo=123;
+def bar=123;
+print foo bar;
+print 'foo:${foo} ${foo} bar:${bar}';
+```
+Output:
+```
+123 123
+foo:123 123 bar:123 
+```
