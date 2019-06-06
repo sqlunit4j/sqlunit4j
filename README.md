@@ -85,3 +85,18 @@ Output:
 123 123
 foo:123 123 bar:123 
 ```
+#### WaitFor
+Script:
+```
+--@WaitFor(maxMillis=1500)
+call proc1('123');
+```
+Output:
+```
+call proc1('123');
++--+----+
+|ID|NAME|
++--+----+
+|0 |123 |
++--+----+
+```
