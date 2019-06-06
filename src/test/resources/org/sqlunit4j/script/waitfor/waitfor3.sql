@@ -1,2 +1,2 @@
-@WaitFor
+--@WaitFor
 call FailN('123');

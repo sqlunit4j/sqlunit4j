@@ -87,7 +87,9 @@ public class Scriptor {
             try {
                 if (statement.prefixPhrase() != null) {
                     final String output = doPrefix(statement.prefixPhrase(), context);
-                    logger.info(output);
+                    if(!hasAnnotation(statement, "Silent")) {
+                    	logger.info(output);
+                    }
                     if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
                         totalResult.append(output);
                     }
@@ -95,7 +97,9 @@ public class Scriptor {
                 }
                 if (statement.defStatement() != null) {
                     final String output = doDef(statement.defStatement(), context);
-                    logger.info(output);
+                    if(!hasAnnotation(statement, "Silent")) {
+                        logger.info(output);
+                    }
                     if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
                         totalResult.append(output);
                     }
@@ -103,7 +107,7 @@ public class Scriptor {
                 }
                 if (statement.printPhrase() != null) {
                     final String output = doPrint(statement.printPhrase(), context);
-                    if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
+                    if(!hasAnnotation(statement, "Silent")) {
                         totalResult.append(output);
                     }
                     continue;

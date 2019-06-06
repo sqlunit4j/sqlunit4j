@@ -1,2 +1,2 @@
-@WaitFor(maxMillis=400)
+--@WaitFor(maxMillis=400)
 call FailN('123');
