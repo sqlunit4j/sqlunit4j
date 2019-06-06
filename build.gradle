@@ -24,7 +24,7 @@ repositories {
 
 archivesBaseName = 'sqlunit4j'
 group = "com.github.sqlunit4j"
-version = "0.2.0"
+version = "0.3.0-SNAPSHOT"
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
