@@ -1,8 +1,5 @@
 lexer grammar SQLUnit4JLexer;
 
-@header{
-	package org.sqlunit4j.lang;
-}
 WS  :   (' ' | '\t' | '\f' )+;//
 NEWLINE : ('\n' | '\r' )+ -> pushMode(Indent1);
   

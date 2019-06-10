@@ -24,7 +24,7 @@ annotationWord WaitFor
  (
 annotationParameter max = 2500
 ) 
-) \n
+) \r\n
 ) (
 selectStatement select (
 statementBody   *   from   table

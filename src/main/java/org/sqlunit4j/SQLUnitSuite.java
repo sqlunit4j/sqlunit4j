@@ -26,7 +26,7 @@ public abstract class SQLUnitSuite {
         scriptor.registerStatementHandler(handler);
     }
 
-    @IOTest
+    @IOTest(saveFailedOutput=false)
     public String run() throws Exception {
         try (final Connection connection = getConnection();) {
             final ScriptContext context = new ScriptContext(connection);

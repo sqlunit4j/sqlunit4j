@@ -1,7 +1,4 @@
 parser grammar SQLUnit4JParser; 
-@header{
-	package org.sqlunit4j.lang;
-}
 options { tokenVocab=SQLUnit4JLexer; }
 
 statements:

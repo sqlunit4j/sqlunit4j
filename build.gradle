@@ -8,8 +8,8 @@
  }
 plugins {
     id 'io.codearte.nexus-staging' version '0.11.0'
+	id 'antlr'
 }
-apply plugin: 'antlr'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 //apply plugin: 'maven'
@@ -41,7 +41,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.antlr/antlr4
     //compileOnly group: 'org.antlr', name: 'antlr4', version: '4.7.1'
 //    antlr "org.antlr:antlr4:4.7.1"
-    antlr("org.antlr:antlr4:4.7.1")
+    antlr("org.antlr:antlr4:4.7.2")
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
@@ -57,9 +57,9 @@ dependencies {
 
 // Optional - Generates visitor classes
 generateGrammarSource {
-    
+    outputDirectory = file("build/generated-src/antlr/main/org/sqlunit4j/lang")
     arguments += ["-visitor", 
-        "-o","build/generated-src/antlr/main/org/sqlunit4j/lang",
+        "-package","org.sqlunit4j.lang",
         "org/sqlunit4j/lang/SQLUnit4JLexer.g4", "org/sqlunit4j/lang/SQLUnit4JParser.g4"]
 }
 
