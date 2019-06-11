@@ -27,31 +27,24 @@ group = "com.github.sqlunit4j"
 version = "0.3.0-SNAPSHOT"
 
 dependencies {
-    // The production code uses the SLF4J logging API at compile time
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
-    
-    // https://mvnrepository.com/artifact/net.sf.jt400/jt400
-    testCompile group: 'net.sf.jt400', name: 'jt400', version: '8.5'
-    // https://mvnrepository.com/artifact/de.vandermeer/asciitable
-    compile group: 'de.vandermeer', name: 'asciitable', version: '0.3.2'
-    // https://mvnrepository.com/artifact/org.antlr/antlr4-runtime
-    //runtime group: 'org.antlr', name: 'antlr4-runtime', version: '4.7.1'
-    // https://mvnrepository.com/artifact/org.antlr/antlr4
-    //compileOnly group: 'org.antlr', name: 'antlr4', version: '4.7.1'
-//    antlr "org.antlr:antlr4:4.7.1"
-    antlr("org.antlr:antlr4:4.7.2")
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
-    testCompile 'junit:junit:4.12'
-    // https://mvnrepository.com/artifact/com.h2database/h2
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
     // https://mvnrepository.com/artifact/com.github.iounit/iounit
     compile group: 'com.github.iounit', name: 'iounit', version: '0.7.0'
     
+    // The production code uses the SLF4J logging API at compile time
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    
+    // https://mvnrepository.com/artifact/de.vandermeer/asciitable
+    compile group: 'de.vandermeer', name: 'asciitable', version: '0.3.2'
+    
+	// https://mvnrepository.com/artifact/org.antlr/antlr4
+    compileOnly group: 'org.antlr', name: 'antlr4', version: '4.7.2'
+    
+	testCompile 'junit:junit:4.12'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     
 }
 
