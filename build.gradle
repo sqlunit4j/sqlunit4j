@@ -37,7 +37,8 @@ dependencies {
     compile group: 'de.vandermeer', name: 'asciitable', version: '0.3.2'
     
 	// https://mvnrepository.com/artifact/org.antlr/antlr4
-    compileOnly group: 'org.antlr', name: 'antlr4', version: '4.7.2'
+    //compileOnly group: 'org.antlr', name: 'antlr4', version: '4.7.2'
+    antlr("org.antlr:antlr4:4.7.2")
     
 	testCompile 'junit:junit:4.12'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
