@@ -23,7 +23,7 @@ statements (
 statement (
 annotationPhrase @ (
 annotationWord Verify
-) \r\n
+) \n
 ) (
 annotationPhrase @ (
 annotationWord WaitFor
@@ -31,7 +31,7 @@ annotationWord WaitFor
  (
 annotationParameter max = 2500
 ) 
-) \r\n
+) \n
 ) (
 selectStatement select (
 statementBody   *   from   table

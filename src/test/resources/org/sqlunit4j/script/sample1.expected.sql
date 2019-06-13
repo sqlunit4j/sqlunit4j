@@ -1,4 +1,4 @@
-select * from table;
+select * from table1;
 +-+-+
 |X|Y|
 +-+-+

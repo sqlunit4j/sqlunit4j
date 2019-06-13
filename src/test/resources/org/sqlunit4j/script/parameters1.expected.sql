@@ -1,7 +1,7 @@
-select * from table where X=?;
+select * from table1 where X=?;
 <EMPTY>
 
-select * from table where X=?;
+select * from table1 where X=?;
 +-+-+
 |X|Y|
 +-+-+

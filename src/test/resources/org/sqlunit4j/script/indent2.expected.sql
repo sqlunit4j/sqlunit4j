@@ -1,5 +1,5 @@
 select * from table2;
-  select *,? extra from table;
+  select table1.*,? extra from table1;
   +-+-+-----+
   |X|Y|EXTRA|
   +-+-+-----+
@@ -7,7 +7,7 @@ select * from table2;
   +-+-+-----+
 
 
-  select *,? extra from table;
+  select table1.*,? extra from table1;
   +-+-+-----+
   |X|Y|EXTRA|
   +-+-+-----+
@@ -15,7 +15,7 @@ select * from table2;
   +-+-+-----+
 
 
-  select *,? extra from table;
+  select table1.*,? extra from table1;
   +-+-+-----+
   |X|Y|EXTRA|
   +-+-+-----+
@@ -23,7 +23,7 @@ select * from table2;
   +-+-+-----+
 
 
-select * from table;
+select * from table1;
 +-+-+
 |X|Y|
 +-+-+

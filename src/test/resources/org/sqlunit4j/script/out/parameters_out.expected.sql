@@ -1,0 +1,2 @@
+CALL simpleProcOut(?,?);
+  ? -> 'hello world'

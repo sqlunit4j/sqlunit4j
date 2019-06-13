@@ -45,7 +45,7 @@ public class TestParsing {
     }
 
     public String toPrettyTree(final String tree) {
-        return tree.replace("(", "(\r\n").replace(")", "\r\n)");
+        return tree.replace("(", "(\r\n").replace(")", "\r\n)").replace("\r\n","\n");
     }
 
     public static String printTokens(final List<? extends Token> tokens, final Vocabulary vocabulary) {

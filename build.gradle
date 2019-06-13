@@ -41,7 +41,8 @@ dependencies {
     antlr("org.antlr:antlr4:4.7.2")
     
 	testCompile 'junit:junit:4.12'
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    //testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+	testCompile 'org.hsqldb:hsqldb:2.5.0'
     // https://mvnrepository.com/artifact/org.mockito/mockito-all
 	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
