@@ -9,8 +9,9 @@
 plugins {
     id 'io.codearte.nexus-staging' version '0.11.0'
 	id 'antlr'
+	id 'java-gradle-plugin'
+	id 'groovy'
 }
-apply plugin: 'java'
 apply plugin: 'eclipse'
 //apply plugin: 'maven'
 apply plugin: 'com.bmuschko.nexus'
@@ -24,11 +25,11 @@ repositories {
 
 archivesBaseName = 'sqlunit4j'
 group = "com.github.sqlunit4j"
-version = "0.3.0-SNAPSHOT"
+version = "0.3.0"
 
 dependencies {
     // https://mvnrepository.com/artifact/com.github.iounit/iounit
-    compile group: 'com.github.iounit', name: 'iounit', version: '0.7.0'
+    compile group: 'com.github.iounit', name: 'iounit', version: '0.8.0'
     
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.25'
@@ -47,7 +48,8 @@ dependencies {
 	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
     testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
-    
+	implementation gradleApi()
+	implementation localGroovy()
 }
 
 // Optional - Generates visitor classes
@@ -98,3 +100,12 @@ modifyPom {
     }
 }
 
+gradlePlugin {
+	plugins {
+		simplePlugin {
+			id = 'com.github.sqlunit4j'
+			implementationClass = 'org.sqlunit4j.plugin.SQLUnitPlugin'
+			
+		}
+	}
+}

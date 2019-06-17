@@ -5,10 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
-
 import org.hsqldb.ColumnBase;
-import org.hsqldb.jdbc.JDBCArrayBasic;
 import org.hsqldb.jdbc.JDBCConnection;
 import org.hsqldb.jdbc.JDBCResultSet;
 import org.hsqldb.navigator.RowSetNavigator;

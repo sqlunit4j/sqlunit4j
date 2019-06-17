@@ -1,8 +1,11 @@
 package org.sqlunit4j;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.junit.runner.RunWith;
@@ -28,6 +31,7 @@ public abstract class SQLUnitSuite {
 
     @IOTest(saveFailedOutput=false)
     public String run() throws Exception {
+    	System.out.println("run....");
         try (final Connection connection = getConnection();) {
             final ScriptContext context = new ScriptContext(connection);
             return scriptor.process(scriptInput, context);
@@ -58,7 +62,6 @@ public abstract class SQLUnitSuite {
     }
 
     protected ResourceBundle getPropertyBundle() {
-        System.out.println();
         final String packageLocation = getClass().getPackage().getName() + ".sqlunit4j";
         try {
             return ResourceBundle.getBundle(packageLocation);
@@ -66,6 +69,11 @@ public abstract class SQLUnitSuite {
             try {
                 return ResourceBundle.getBundle("sqlunit4j");
             } catch (final Exception e2) {
+                try {
+					return new PropertyResourceBundle(new FileInputStream("sqlunit4j.properties"));
+				} catch (IOException e1) {
+					System.err.println("Unable to find sqlunit4j.properties in the path");
+				}
             }
         }
         return null;
