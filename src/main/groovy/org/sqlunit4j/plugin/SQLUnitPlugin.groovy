@@ -52,7 +52,7 @@ public class SQLUnitPlugin implements Plugin<Project> {
 
 					@Override
 					public String sourceFolder() {
-						return extension.getDestination()?:"";
+						return extension.getSourceFolder()?:"";
 					}
 
 					@Override
