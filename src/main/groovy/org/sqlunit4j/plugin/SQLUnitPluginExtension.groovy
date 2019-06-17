@@ -1,11 +1,15 @@
 package org.sqlunit4j.plugin;
+
+import org.gradle.api.Project
+
 class SQLUnitPluginExtension {
-    String rootPackage = ''
+    String rootPackage = '/'
+	Project project;
 	
 	def sourceFolder
 	
 		File getSourceFolder() {
-			project.file(sourceFolder)
+			sourceFolder?project.file(sourceFolder):null
 		}
 	
 }

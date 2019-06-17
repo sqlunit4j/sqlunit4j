@@ -16,6 +16,7 @@ public class SQLUnitPlugin implements Plugin<Project> {
 	@Override
     public void apply(final Project project) {
 		final def extension = project.extensions.create('sqlunit4j', SQLUnitPluginExtension)
+		extension.setProject(project);
         final def mytask = project.task('sqlunit4j') {
             doLast {
 				final IOUnitTestRunner runner = new IOUnitTestRunner(SQLUnitSuite.class,new IOTest() {
