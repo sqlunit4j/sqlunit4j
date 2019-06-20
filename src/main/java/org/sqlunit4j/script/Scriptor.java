@@ -136,7 +136,9 @@ public class Scriptor {
 				if (statement.otherStatement() != null) {
 					doStatement(statement.otherStatement(), result);
 				}
-				totalResult.append(context.getIndent()).append(result.getQuery().toString()).append(";\r\n");
+				if(!hasAnnotation(statement, "Silent")) {
+					totalResult.append(context.getIndent()).append(result.getQuery().toString()).append(";\r\n");
+				}
 				logger.info(context.getIndent() + result.getQuery());
 				final String output = doQuery(result, context, statementTree,statement);
 				// if(hasAnnotation(statement,"Verify") ||
@@ -293,7 +295,9 @@ public class Scriptor {
 			final long start = System.currentTimeMillis();
 			st.execute();
 			if (st.getUpdateCount() > 0) {
-				info.append(context.getIndent()).append(st.getUpdateCount() + " records updated/deleted\r\n\r\n");
+				if(!hasAnnotation(statement, "Silent") && !hasAnnotation(statement, "Before") && !hasAnnotation(statement, "After") && !hasAnnotation(statement, "Quiet")) {
+					info.append(context.getIndent()).append(st.getUpdateCount() + " records updated/deleted\r\n\r\n");
+				}
 				logger.info(context.getIndent() + st.getUpdateCount() + " records updated/deleted");
 			}
 			info.append(processOutParams(statementInfo, subcontext, st,statement));
@@ -321,8 +325,10 @@ public class Scriptor {
 						Thread.sleep(300);
 						st.execute();
 						if (st.getUpdateCount() > 0) {
-							info.append(context.getIndent())
+							if(!hasAnnotation(statement, "Silent") && !hasAnnotation(statement, "Before") && !hasAnnotation(statement, "After") && !hasAnnotation(statement, "Quiet")) {
+								info.append(context.getIndent())
 									.append(st.getUpdateCount() + " records updated/deleted\r\n\r\n");
+							}
 							logger.info(context.getIndent() + st.getUpdateCount() + " records updated/deleted");
 						}
 						processOutParams(statementInfo, subcontext, st,statement);
@@ -367,20 +373,20 @@ public class Scriptor {
 					final String parmName = statementInfo.getParameters().get(parmNum - 1);
 					if (parmName != null) {
 						context.getParentContext().getVariables().put(parmName, st.getObject(parmNum));
-						if (!hasAnnotation(statement, "Silent")) {
+						if (!hasAnnotation(statement, "Silent") && !hasAnnotation(statement, "Quiet")) {
 							retval.append(context.getIndent()).append("?" + parmName + " -> " + representation + "\r\n");
 						}else {
 						    logger.info(context.getIndent() + "?" + parmName + " -> " + representation);
 						}
 					} else {
-						if (!hasAnnotation(statement, "Silent")) {
+						if (!hasAnnotation(statement, "Silent") && !hasAnnotation(statement, "Quiet")) {
 							retval.append(context.getIndent()).append("? -> " + representation + "\r\n");
 						}else {
 							logger.info(context.getIndent() + "? -> " + representation);
 						}
 					}
 				} else {
-					if (!hasAnnotation(statement, "Silent")) {
+					if (!hasAnnotation(statement, "Silent") && !hasAnnotation(statement, "Quiet")) {
 						retval.append(context.getIndent()).append("? -> " + representation + "\r\n");
 					}else {
 						logger.info(context.getIndent() + "? -> " + representation);
