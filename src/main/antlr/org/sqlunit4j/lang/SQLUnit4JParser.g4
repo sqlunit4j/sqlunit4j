@@ -101,7 +101,7 @@ reservedWord:
 	|SELECT
 	|DELETE
 	|UPDATE
-	|CALLs
+	|CALL
 	|WITH;
 
 parameter:
