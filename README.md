@@ -1,7 +1,10 @@
 # SQLUnit4J
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/958d317e31e4455f9b67560f24d79767)](https://app.codacy.com/app/ryaneberly/sqlunit4j?utm_source=github.com&utm_medium=referral&utm_content=sqlunit4j/sqlunit4j&utm_campaign=Badge_Grade_Dashboard)
+
 ##### Write SQL Unit tests in SQL (but not in your database)
 
-SQLUnit4j is a simple framework based on JUnit and ioUnit that reads a suite .sql scripts from the file system and executed them against expected results.  
+SQLUnit4j is a simple framework based on JUnit 4 and ioUnit that reads a suite .sql scripts from the file system and executed them against expected results.  (For JUnit 5, use the [JUnit 4 support](https://junit.org/junit5/docs/current/user-guide/#migrating-from-junit4-running) )
 
 ## Running SQLUnit4J with Gradle:
 
