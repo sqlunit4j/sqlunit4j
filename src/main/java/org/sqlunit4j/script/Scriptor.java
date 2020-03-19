@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -83,8 +84,14 @@ public class Scriptor {
 	public String process(final List<TreeNode> statements, final ScriptContext context) throws Exception {
 		final StringBuilder totalResult = new StringBuilder();
 		for (final TreeNode statementTree : statements) {
-			final StatementContext statement = statementTree.getStatementContext();
+			StatementContext statement = statementTree.getStatementContext();
 			try {
+				final int connIndex=determineConnIndex(statement.prefixPhrase());
+				if(connIndex>1) {
+					final StatementsContext statementsContext = Parser.parse(statement.prefixPhrase().prefixBody().getText()+";");
+					totalResult.append(statement.prefixPhrase().prefix.getText()).append(":");
+					statement=statementsContext.statement().get(0);
+				}
 				if (statement.prefixPhrase() != null) {
 					final String output = doPrefix(statement.prefixPhrase(), context);
 					if (hasAnnotation(statement, "Verify") || isLastStatement(statements, statementTree)) {
@@ -140,7 +147,7 @@ public class Scriptor {
 					totalResult.append(context.getIndent()).append(result.getQuery().toString()).append(";\r\n");
 				}
 				logger.info(context.getIndent() + result.getQuery());
-				final String output = doQuery(result, context, statementTree,statement);
+				final String output = doQuery(result, context, statementTree,statement,connIndex);
 				// if(hasAnnotation(statement,"Verify") ||
 				// statements.indexOf(statementTree) == statements.size()-1)
 				if (!output.isEmpty()) {
@@ -154,6 +161,17 @@ public class Scriptor {
 			}
 		}
 		return totalResult.toString();
+	}
+
+	private int determineConnIndex(PrefixPhraseContext prefixPhrase) {
+		if(prefixPhrase==null || prefixPhrase.prefix==null|| prefixPhrase.prefix.getText()==null) {
+			return 1;
+		}
+		Matcher m = Pattern.compile("(?:conn(?:ection)?)?([1-9])").matcher(prefixPhrase.prefix.getText());
+		if(m.matches()) {
+			return Integer.parseInt(m.group(1));
+		}
+		return 1;
 	}
 
 	private boolean isLastStatement(final List<TreeNode> statements, final TreeNode statementTree) {
@@ -252,11 +270,11 @@ public class Scriptor {
 	}
 
 	private String doQuery(final StatementMetaData statementInfo, final ScriptContext context,
-			final TreeNode currentStatement, StatementContext statement) throws Exception {
+			final TreeNode currentStatement, StatementContext statement, int connIndex) throws Exception {
 		final StringBuilder info = new StringBuilder();
 		boolean truncateTo100 = !hasAnnotation(statement, "Verbose");
 		ScriptContext subcontext = context.subContext();
-		try (CallableStatement st = context.getConnection().prepareCall(statementInfo.getQuery());) {
+		try (CallableStatement st = context.getConnection(connIndex).prepareCall(statementInfo.getQuery());) {
 			for (int parmNum = 1; parmNum <= st.getParameterMetaData().getParameterCount(); parmNum++) {
 				if ((ParameterMetaData.parameterModeIn & st.getParameterMetaData().getParameterMode(parmNum)) > 0
 						|| (ParameterMetaData.parameterModeInOut

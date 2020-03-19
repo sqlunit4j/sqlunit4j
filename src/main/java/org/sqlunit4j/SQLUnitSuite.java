@@ -32,22 +32,28 @@ public abstract class SQLUnitSuite {
     @IOTest(saveFailedOutput=false)
     public String run() throws Exception {
     	System.out.println("run....");
-        try (final Connection connection = getConnection();) {
-            final ScriptContext context = new ScriptContext(connection);
-            return scriptor.process(scriptInput, context);
+        try (final Connection connection = getConnection("");) {
+            try (final Connection connection2 = getConnection("2");) {
+            	final ScriptContext context = new ScriptContext(connection,connection2);
+            	return scriptor.process(scriptInput, context);
+            }
         }
     }
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    public Connection getConnection(String suffix) throws ClassNotFoundException, SQLException {
+    	suffix = suffix==null?"":suffix;
         final ResourceBundle bundle = getPropertyBundle();
-        final String driver = bundle.getString("driver") == null ? System.getProperty("sqlunit4j.driver")
-                : bundle.getString("driver");
-        final String url = bundle.getString("url") == null ? System.getProperty("sqlunit4j.url")
-                : bundle.getString("url");
-        final String user = bundle.getString("user") == null ? System.getProperty("sqlunit4j.user")
-                : bundle.getString("user");
-        final String password = bundle.getString("password") == null ? System.getProperty("sqlunit4j.password")
-                : bundle.getString("password");
+        final String driver = bundle.getString("driver"+suffix) == null ? System.getProperty("sqlunit4j.driver"+suffix)
+                : bundle.getString("driver"+suffix);
+        final String url = bundle.getString("url"+suffix) == null ? System.getProperty("sqlunit4j.url"+suffix)
+                : bundle.getString("url"+suffix);
+        final String user = bundle.getString("user"+suffix) == null ? System.getProperty("sqlunit4j.user"+suffix)
+                : bundle.getString("user"+suffix);
+        final String password = bundle.getString("password"+suffix) == null ? System.getProperty("sqlunit4j.password"+suffix)
+                : bundle.getString("password"+suffix);
+    	if(suffix.length()>0 && driver == null) {
+    		return null;
+    	}
         if (url == null && bundle == null) {
             final Logger logger = LoggerFactory.getLogger(SQLUnitSuite.class);
             logger.error(

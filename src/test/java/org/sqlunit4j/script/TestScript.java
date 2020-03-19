@@ -104,7 +104,7 @@ public class TestScript extends SQLUnitSuite {
 	}
 
 	@Override
-	public Connection getConnection() throws ClassNotFoundException, SQLException {
+	public Connection getConnection(String suffx) throws ClassNotFoundException, SQLException {
 		return connection;
 	}
 
