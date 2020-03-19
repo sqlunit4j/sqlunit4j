@@ -151,7 +151,9 @@ public class Scriptor {
 				// if(hasAnnotation(statement,"Verify") ||
 				// statements.indexOf(statementTree) == statements.size()-1)
 				if (!output.isEmpty()) {
-					logger.info(output);
+					if(!hasAnnotation(statement, "Silent")) {
+						logger.info(output);
+					}
 					totalResult.append(output);
 				}
 			} catch (final Exception e) {
@@ -178,12 +180,16 @@ public class Scriptor {
 		return statements.indexOf(statementTree) == statements.size() - 1 && statementTree.getChildren().size() == 0;
 	}
 
-	private boolean hasAnnotation(final StatementContext statement, final String annoName) {
+	private boolean hasAnnotation(final StatementContext statement, final String ... annoName) {
 		if (statement.annotationPhrase() != null) {
 			for (final AnnotationPhraseContext phrase : statement.annotationPhrase()) {
 				for (final AnnotationWordContext word : phrase.annotationWord()) {
-					if (word != null && annoName.equalsIgnoreCase(word.getText())) {
-						return true;
+					if (word != null) {
+						for(String anno:annoName) {
+							if(anno!=null && anno.equalsIgnoreCase(word.getText())) {
+								return true;
+							}
+						}
 					}
 				}
 			}
@@ -318,7 +324,9 @@ public class Scriptor {
 				}
 				logger.info(context.getIndent() + st.getUpdateCount() + " records updated/deleted");
 			}
-			info.append(processOutParams(statementInfo, subcontext, st,statement));
+			if(!hasAnnotation(statement, "Silent") && !hasAnnotation(statement, "Quiet")) {
+				info.append(processOutParams(statementInfo, subcontext, st,statement));
+			}
 			ResultSet rsa = st.getResultSet();
 			if (rsa == null && st.getMoreResults()) {
 				rsa = st.getResultSet();
@@ -368,7 +376,8 @@ public class Scriptor {
 				if (currentStatement.getChildren().size() > 0) {
 					return info.toString() + processResult(rsa, context, currentStatement);
 				} else {
-					return info.toString() + renderResult(rsa, context, currentStatement);
+					final String result=renderResult(rsa, context, currentStatement);
+					return info.toString() + (hasAnnotation(statement, "Silent","Quiet")?"":result);
 				}
 			}
 		}
