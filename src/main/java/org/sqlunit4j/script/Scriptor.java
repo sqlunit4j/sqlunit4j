@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -88,8 +89,13 @@ public class Scriptor {
 			try {
 				final int connIndex=determineConnIndex(statement.prefixPhrase());
 				if(connIndex>1) {
-					final StatementsContext statementsContext = Parser.parse(statement.prefixPhrase().prefixBody().getText()+";");
-					totalResult.append(statement.prefixPhrase().prefix.getText()).append(":");
+					String stmt = statement.annotationPhrase().stream().map(x->x.getText())
+							 .collect( Collectors.joining() )+
+							statement.prefixPhrase().prefixBody().getText()+";";
+					final StatementsContext statementsContext = Parser.parse(stmt);
+					if (!hasAnnotation(statement, "Silent")) {
+						totalResult.append(statement.prefixPhrase().prefix.getText()).append(":");
+					}
 					statement=statementsContext.statement().get(0);
 				}
 				if (statement.prefixPhrase() != null) {
